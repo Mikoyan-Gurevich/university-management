@@ -1,8 +1,8 @@
-// TODO - where did pg come from;
 const pg = require('pg');
 const config = {
-  user: 'gauravsharma',
+  user: 'postgresql',
   database: 'university',
+  password: 'my_postgres_password',
   max: 10,
   idleTimeoutMillis: 30000
 }

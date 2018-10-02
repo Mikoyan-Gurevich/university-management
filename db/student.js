@@ -12,7 +12,6 @@ const student = {
                     console.log(err);
                     cb(err);
                 } else {
-                    // TODO - do we need to hanlde scenario for count < 1
                     if (result.rowCount >= 1) {
                         cb(null, result.rowCount);
                     }
@@ -21,7 +20,6 @@ const student = {
         });
     },
     getStudent: function (data, cb) {
-        // TODO - Admission year handling not done.
         db.connect(function (err, client) {
             if (err) {
                 cb(err);

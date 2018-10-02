@@ -21,7 +21,7 @@ CREATE TABLE student (
   name VARCHAR,
   admission_date VARCHAR NOT NULL ,
   is_active INTEGER  DEFAULT 1,
-  sem_class_id VARCHAR,
+  sem_class_id INTEGER,
   FOREIGN KEY (sem_class_id) REFERENCES semester_class(id)
 );
 
