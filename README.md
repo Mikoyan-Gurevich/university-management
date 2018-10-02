@@ -25,7 +25,7 @@
 
 ## API Formats
 
-### Get All Students
+### 1. Get All Students
 This API returns the students present in database according to the query params present in the URL.
 #### URL
 ```
@@ -50,7 +50,7 @@ GET - /students?classes=1&classes=2&admissionYearAfter=2017&active=true
     }
 ]
 ```
-### Get Student By student ID
+### 2. Get Student By student ID
 Returns a single student whose ID is given
 #### URL
 ```
@@ -68,7 +68,7 @@ GET - /students/:id
     }
 ]
 ```
-### Get student with semester class
+### 3. Get student with semester class
 Returns the semester classes student is part of, including the professor teaching the class.
 #### URL
 ```
@@ -84,7 +84,7 @@ GET - /students/:studentId/classes
     }
 ]
 ```
-### Create new student
+### 4. Create new student
 Creates a new student
 #### URL 
 ```
@@ -97,7 +97,7 @@ POST - /students
 	"admissionDate": "1990-08-23"
 }
 ```
-### Update student name
+### 5. Update student name
 #### URL
 Updates the name of student
 ```
@@ -109,13 +109,13 @@ PATCH - /students/:id
 	"name":"Saurav Sharma"
 }
 ```
-### Delete student with student ID
+### 6. Delete student with student ID
 Marks the student as inactive in database.
 #### URL
 ```
 DELETE - /students/:id
 ```
-### Get classes
+### 7. Get classes
 Returns list of classes.
 #### URL
 ```
@@ -134,7 +134,7 @@ GET - /classes
     }
 ]
 ```
-### Add students to class
+### 8. Add students to class
 Adds provided students to a semester class.
 #### URL
 ```
