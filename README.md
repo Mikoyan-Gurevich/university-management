@@ -14,18 +14,22 @@
   cd university-management
   npm install
   ```
+* Execute university.sql file to initialize database.
+  ```
+  psql -U postgres -f university.sql
+  ```
 * Start development server. This will start the service at port 3000.
   ```
   npm start
   ```
 
-## API formats
+## API Formats
 
 ### Get All Students
 This API returns the students present in database according to the query params present in the URL.
 #### URL
 ```
-/students?classes=1&classes=2&admissionYearAfter=2017&active=true
+GET - /students?classes=1&classes=2&admissionYearAfter=2017&active=true
 ```
 #### Response
 ```JSON
@@ -50,7 +54,7 @@ This API returns the students present in database according to the query params 
 Returns a single student whose ID is given
 #### URL
 ```
-/students/:id
+GET - /students/:id
 ```
 #### Response
 ```JSON
@@ -65,8 +69,78 @@ Returns a single student whose ID is given
 ]
 ```
 ### Get student with semester class
+Returns the semester classes student is part of, including the professor teaching the class.
+#### URL
+```
+GET - /students/:studentId/classes
+```
+#### Response
+```JSON
+[
+    {
+        "student_name": "Gaurav Sharma",
+        "professor_name": "Gaitonde",
+        "sem_class": "Maths"
+    }
+]
+```
 ### Create new student
+Creates a new student
+#### URL 
+```
+POST - /students
+```
+#### Body
+```JSON
+{
+	"name":"Saurabh Sharma",
+	"admissionDate": "1990-08-23"
+}
+```
 ### Update student name
+#### URL
+Updates the name of student
+```
+PATCH - /students/:id
+```
+#### Body
+```JSON
+{
+	"name":"Saurav Sharma"
+}
+```
 ### Delete student with student ID
+Marks the student as inactive in database.
+#### URL
+```
+DELETE - /students/:id
+```
 ### Get classes
+Returns list of classes.
+#### URL
+```
+GET - /classes
+```
+#### Response
+```JSON
+[
+    {
+        "id": 1,
+        "title": "Maths"
+    },
+    {
+        "id": 2,
+        "title": "English"
+    }
+]
+```
 ### Add students to class
+Adds provided students to a semester class.
+#### URL
+```
+POST - /classes/:classId/students?studentId=:studentId1&studentId=:studentId2
+```
+#### Body
+```JSON
+{}
+```
