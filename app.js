@@ -13,6 +13,11 @@ app.use(function (req, res, next) {
   err.status = 404;
   next(err);
 });
+// handling 500 
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
 
 const server = http.createServer(app);
 server.listen('3000');
