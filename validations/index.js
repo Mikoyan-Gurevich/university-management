@@ -8,7 +8,8 @@ const dateFormat = Joi.string().regex(/^[0-9-]+$/);
 module.exports = {
     getStudent: {
         query: {
-            classes: plainIntegersArray,
+            // TODO - fix below
+            //classes: plainIntegersArray,
             active: Joi.any().valid('true', 'false'),
             admissionYearAfter: plainIntegers,
             admissionYearBefore: plainIntegers,
@@ -51,7 +52,7 @@ module.exports = {
             id: plainIntegers
         },
         query: {
-            student: plainIntegersArray
+            // student: plainIntegersArray
         }
     }
 };

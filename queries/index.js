@@ -48,7 +48,7 @@ async function createStudent(req, res, next) {
 async function studentWithSemester(req, res, next) {
     const studentID = parseInt(req.params.id);
     try {
-        const data = await db.one('select student.name as student_name, professor.name as professor_name, semester_class.title as sem_class from professor INNER JOIN student ON professor.sem_class_id = student.sem_class_id INNER JOIN semester_class ON student.sem_class_id=semester_class.id where student.roll_no = $1', studentID);
+        const data = await db.any('select sc.title, p.name from student as s inner join class_mapping as c on s.roll_no = c.student_roll_no inner join semester_class as sc on sc.id = c.semester_class_id inner join professor as p on p.sem_class_id = sc.id where s.roll_no = $1', studentID);
         res.status(200).json({
             status: 'success',
             data: data,
@@ -100,10 +100,16 @@ async function getClasses(req, res, next) {
 }
 
 async function addStudentsToClass(req, res, next) {
-    const classID = parseInt(req.params.id);
-    const students = req.query.student.map((studentID) => { return parseInt(studentID) });
+    const list = req.query.student instanceof Array
+        ? req.query.student.map((studentID) => { return { studentID: parseInt(studentID), classID: parseInt(req.params.id) } })
+        : [{ studentID: parseInt(req.query.student), classID: parseInt(req.params.id) }];
     try {
-        await db.any('update student set sem_class_id = $1 where roll_no in ($2:csv)', [classID, students]);
+        await db.tx(transaction => {
+            const queries = list.map(item => {
+                return transaction.none('insert into class_mapping(student_roll_no, semester_class_id) VALUES(${studentID}, ${classID})', item);
+            });
+            return transaction.batch(queries);
+        })
         res.status(200).json({
             status: 'success',
             message: `Classes mapped successfully`

@@ -20,9 +20,15 @@ CREATE TABLE student (
   roll_no SERIAL PRIMARY KEY,
   name VARCHAR,
   admission_date VARCHAR NOT NULL ,
-  is_active INTEGER  DEFAULT 1,
-  sem_class_id INTEGER,
-  FOREIGN KEY (sem_class_id) REFERENCES semester_class(id)
+  is_active INTEGER  DEFAULT 1
+);
+
+CREATE TABLE class_mapping (
+  student_roll_no SERIAL,
+  FOREIGN KEY (student_roll_no) REFERENCES student(roll_no),
+  semester_class_id SERIAL,
+  FOREIGN KEY (semester_class_id) REFERENCES semester_class(id),
+  PRIMARY KEY(student_roll_no, semester_class_id)
 );
 
 
