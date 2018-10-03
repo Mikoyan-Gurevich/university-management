@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
 // handling 500 
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).send('Something broke!')
+  res.status(500).send(err.stack)
 })
 
 const server = http.createServer(app);
