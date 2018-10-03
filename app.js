@@ -5,7 +5,6 @@ const routes = require('./routes/index');
 
 const app = express();
 app.use(bodyParser.json());
-// routes(app);
 app.use('/', routes);
 
 // If no valid API URL, throwing 404.

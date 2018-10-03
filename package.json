@@ -8,6 +8,8 @@
     "bluebird": "^3.5.2",
     "body-parser": "^1.13.3",
     "express": "^4.13.4",
+    "express-validation": "^1.0.2",
+    "joi": "^13.7.0",
     "pg-promise": "^5.6.4"
   }
 }

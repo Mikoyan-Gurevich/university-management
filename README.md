@@ -29,26 +29,37 @@
 This API returns the students present in database according to the query params present in the URL.
 #### URL
 ```
-GET - /students?classes=1&classes=2&admissionYearAfter=2017&active=true
+GET - /students?classes[]=1&classes[]=2&admissionYearAfter=2017&active=true&pageSize=2&pageNumber=2
 ```
 #### Response
 ```JSON
-[
-    {
-        "roll_no": 1,
-        "name": "Name 1",
-        "admission_date": "2018-08-04",
-        "is_active": 1,
-        "sem_class_id": null
-    },
-    {
-        "roll_no": 2,
-        "name": "Name 2",
-        "admission_date": "2018-08-02",
-        "is_active": 1,
-        "sem_class_id": null
-    }
-]
+{
+    "status": "success",
+    "data": [
+        {
+            "roll_no": 3,
+            "name": "Gaurav Sharma",
+            "admission_date": "2018-08-04",
+            "is_active": 0,
+            "sem_class_id": 3
+        },
+        {
+            "roll_no": 1,
+            "name": "Test Sharma",
+            "admission_date": "2018-08-04",
+            "is_active": 0,
+            "sem_class_id": 4
+        },
+        {
+            "roll_no": 2,
+            "name": "updatedName 3",
+            "admission_date": "2018-08-04",
+            "is_active": 0,
+            "sem_class_id": 4
+        }
+    ],
+    "message": "Retrieved ALL students"
+}
 ```
 ### 2. Get Student By student ID
 Returns a single student whose ID is given
@@ -58,15 +69,17 @@ GET - /students/:id
 ```
 #### Response
 ```JSON
-[
-    {
-        "roll_no": 1,
-        "name": "Gaurav Sharma",
-        "admission_date": "1992-11-07",
-        "is_active": 1,
-        "sem_class_id": null
-    }
-]
+{
+    "status": "success",
+    "data": {
+        "roll_no": 2,
+        "name": "updatedName 3",
+        "admission_date": "2018-08-04",
+        "is_active": 0,
+        "sem_class_id": 4
+    },
+    "message": "Retrieved data for student with ID 2"
+}
 ```
 ### 3. Get student with semester class
 Returns the semester classes student is part of, including the professor teaching the class.
@@ -76,13 +89,15 @@ GET - /students/:studentId/classes
 ```
 #### Response
 ```JSON
-[
-    {
-        "student_name": "Gaurav Sharma",
-        "professor_name": "Gaitonde",
-        "sem_class": "Maths"
-    }
-]
+{
+    "status": "success",
+    "data": {
+        "student_name": "updatedName 3",
+        "professor_name": "Sugian",
+        "sem_class": "Geography"
+    },
+    "message": "Retrieved classes for student with ID 2"
+}
 ```
 ### 4. Create new student
 Creates a new student
@@ -93,8 +108,8 @@ POST - /students
 #### Body
 ```JSON
 {
-	"name":"Saurabh Sharma",
-	"admissionDate": "1990-08-23"
+	"name":"latest Name ",
+	"admissionDate": "2019-09-12"
 }
 ```
 ### 5. Update student name
@@ -123,22 +138,26 @@ GET - /classes
 ```
 #### Response
 ```JSON
-[
-    {
-        "id": 1,
-        "title": "Maths"
-    },
-    {
-        "id": 2,
-        "title": "English"
-    }
-]
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "title": "Maths"
+        },
+        {
+            "id": 2,
+            "title": "English"
+        }
+    ],
+    "message": "Retrieved all classes"
+}
 ```
 ### 8. Add students to class
 Adds provided students to a semester class.
 #### URL
 ```
-POST - /classes/:classId/students?studentId=:studentId1&studentId=:studentId2
+POST - /classes/4/students?student[]=1&student[]=2
 ```
 #### Body
 ```JSON

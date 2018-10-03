@@ -1,8 +1,14 @@
 const db = require('pg-promise')({ promiseLib: require('bluebird') })('postgres://localhost:5432/university');
 
 async function getStudent(req, res, next) {
+    const classes = req.query.classes && req.query.classes.length > 0 && req.query.classes.map((classID) => { return parseInt(classID) });
+    const active = req.query.active === 'true' ? [1] : req.query.active === 'false' ? [0] : [0, 1];
+    const admissionYearAfter = req.query.admissionYearAfter ? req.query.admissionYearAfter + '01-01' : null;
+    const admissionYearBefore = req.query.admissionYearBefore ? req.query.admissionYearBefore + '12-31' : null;
+    const pageSize = req.query.pageSize || 20;
+    const pageNumber = req.query.pageNumber || 1;
     try {
-        const data = await db.any('select * from student');
+        const data = await db.any(`select * from student where is_active in ($1:csv) ${classes ? 'and sem_class_id in ($2:csv)' : ''} ${admissionYearAfter ? 'and admission_date >= $3' : ''} ${admissionYearBefore ? 'and admission_date <= $4' : ''} limit $5 offset $6`, [active, classes, admissionYearAfter, admissionYearBefore, pageSize, pageSize * (pageNumber - 1)]);
         res.status(200).json({
             status: 'success',
             data: data,
@@ -94,10 +100,10 @@ async function getClasses(req, res, next) {
 }
 
 async function addStudentsToClass(req, res, next) {
-    const classesID = parseInt(req.params.id);
+    const classID = parseInt(req.params.id);
     const students = req.query.student.map((studentID) => { return parseInt(studentID) });
     try {
-        await db.any('update student set sem_class_id = $1 where roll_no in ($2:csv)', [classesID, students]);
+        await db.any('update student set sem_class_id = $1 where roll_no in ($2:csv)', [classID, students]);
         res.status(200).json({
             status: 'success',
             message: `Classes mapped successfully`
