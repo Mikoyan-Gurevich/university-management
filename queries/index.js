@@ -1,4 +1,4 @@
-const db = require('pg-promise')({ promiseLib: require('bluebird') })('postgres://localhost:5432/university');
+const db = require('pg-promise')({ promiseLib: require('bluebird') })('postgres://postgres:my_postgres_password@localhost:5432/university');
 
 async function getStudent(req, res, next) {
     const classes = req.query.classes && req.query.classes.length > 0 && req.query.classes.map((classID) => { return parseInt(classID) });
