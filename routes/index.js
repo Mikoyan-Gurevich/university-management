@@ -1,26 +1,19 @@
-'use strict';
+const express = require('express');
+const queries = require('../queries');
 
-const error = require('./error');
-const respond = require('./respond');
-const student = require('./student');
-const classes = require('./classes');
+const router = express.Router();
 
-module.exports = function (app) {
+router.get('/students', queries.getStudent); // TODO - radd query params support
+router.post('/students', queries.createStudent);
+router.get('/students/:id', queries.getSingleStudent);
+router.get('/students/:id/classes', queries.studentWithSemester);
+router.patch('/students/:id', queries.updateName);
+router.delete('/students/:id', queries.deactivateStudent);// TODO - returning 0 rows unnecessary
+router.get('/classes', queries.getClasses);
+router.post('/classes/:id/students', queries.addStudentsToClass);
 
-    app.get('/students', student.getStudent, respond, error);
+router.get('/', function (req, res) {
+    res.send('Things are working, but please hit a valid API URL.');
+});
 
-    app.post('/students', student.createStudent, respond, error);
-
-    app.get('/students/:id', student.getSingleStudent, respond, error);
-
-    app.get('/students/:id/classes', student.studentWithSemester, respond, error);
-
-    app.patch("/students/:id", student.updateName, respond, error);
-
-    app.delete('/students/:id', student.deactivateStudent, respond, error);
-
-    app.get('/classes', classes.getClasses, respond, error);
-
-    app.post('/classes/:id/students', classes.addStudentsToClass, respond, error);
-
-};
+module.exports = router;

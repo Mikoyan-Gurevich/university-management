@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
-const routes = require('./routes');
+const routes = require('./routes/index');
 
 const app = express();
 app.use(bodyParser.json());
-routes(app);
+// routes(app);
+app.use('/', routes);
 
 // If no valid API URL, throwing 404.
 app.use(function (req, res, next) {
