@@ -8,7 +8,7 @@ async function getStudent(req, res, next) {
     const pageSize = req.query.pageSize || 20;
     const pageNumber = req.query.pageNumber || 1;
     try {
-        const data = await db.any(`select * from student where is_active in ($1:csv) ${classes ? 'and sem_class_id in ($2:csv)' : ''} ${admissionYearAfter ? 'and admission_date >= $3' : ''} ${admissionYearBefore ? 'and admission_date <= $4' : ''} limit $5 offset $6`, [active, classes, admissionYearAfter, admissionYearBefore, pageSize, pageSize * (pageNumber - 1)]);
+        const data = await db.any(`select * from student where is_active in ($1:csv) ${classes ? 'and roll_no in (select student_roll_no from class_mapping where semester_class_id in ($2:csv))' : ''} ${admissionYearAfter ? 'and admission_date >= $3' : ''} ${admissionYearBefore ? 'and admission_date <= $4' : ''} ${classes ? 'and roll_no in (1,2,3)' : ''} limit $5 offset $6`, [active, classes, admissionYearAfter, admissionYearBefore, pageSize, pageSize * (pageNumber - 1)]);
         res.status(200).json({
             status: 'success',
             data: data,
