@@ -3,12 +3,12 @@ const db = require('pg-promise')({ promiseLib: require('bluebird') })('postgres:
 async function getStudent(req, res, next) {
     const classes = req.query.classes && req.query.classes.length > 0 && req.query.classes.map((classID) => { return parseInt(classID) });
     const active = req.query.active === 'true' ? [1] : req.query.active === 'false' ? [0] : [0, 1];
-    const admissionYearAfter = req.query.admissionYearAfter ? req.query.admissionYearAfter + '01-01' : null;
-    const admissionYearBefore = req.query.admissionYearBefore ? req.query.admissionYearBefore + '12-31' : null;
+    const admissionYearAfter = req.query.admissionYearAfter ? req.query.admissionYearAfter + '-01-01' : null;
+    const admissionYearBefore = req.query.admissionYearBefore ? req.query.admissionYearBefore + '-01-01' : null;
     const pageSize = req.query.pageSize || 20;
     const pageNumber = req.query.pageNumber || 1;
     try {
-        const data = await db.any(`select * from student where is_active in ($1:csv) ${classes ? 'and roll_no in (select student_roll_no from class_mapping where semester_class_id in ($2:csv))' : ''} ${admissionYearAfter ? 'and admission_date >= $3' : ''} ${admissionYearBefore ? 'and admission_date <= $4' : ''} ${classes ? 'and roll_no in (1,2,3)' : ''} limit $5 offset $6`, [active, classes, admissionYearAfter, admissionYearBefore, pageSize, pageSize * (pageNumber - 1)]);
+        const data = await db.any(`select * from student where is_active in ($1:csv) ${classes ? 'and roll_no in (select student_roll_no from class_mapping where semester_class_id in ($2:csv))' : ''} ${admissionYearAfter ? 'and admission_date >= $3::date' : ''} ${admissionYearBefore ? 'and admission_date < $4::date' : ''} ${classes ? 'and roll_no in (1,2,3)' : ''} limit $5 offset $6`, [active, classes, admissionYearAfter, admissionYearBefore, pageSize, pageSize * (pageNumber - 1)]);
         res.status(200).json({
             status: 'success',
             data: data,

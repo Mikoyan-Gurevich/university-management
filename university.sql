@@ -19,7 +19,7 @@ CREATE TABLE professor (
 CREATE TABLE student (
   roll_no SERIAL PRIMARY KEY,
   name VARCHAR,
-  admission_date VARCHAR NOT NULL ,
+  admission_date DATE NOT NULL ,
   is_active INTEGER  DEFAULT 1
 );
 

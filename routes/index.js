@@ -5,7 +5,7 @@ var validation = require('../validations/index');
 
 const router = express.Router();
 
-router.get('/students', validate(validation.getStudent), queries.getStudent); // TODO - correct date comparison
+router.get('/students', validate(validation.getStudent), queries.getStudent);
 router.post('/students', validate(validation.createStudent), queries.createStudent);
 router.get('/students/:id', validate(validation.getSingleStudent), queries.getSingleStudent);
 router.get('/students/:id/classes', validate(validation.studentWithSemester), queries.studentWithSemester);
